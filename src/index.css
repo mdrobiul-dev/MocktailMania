@@ -1,66 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
-@import "tailwindcss";
-
-html,
-body {
-  width: 100%;
-  background-color: black;
-  color: white;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-@font-face {
-  font-family: "monalisa";
-  src: url("/public/fonts/Modern\ Negra\ Demo.ttf") format("truetype");
-}
-
-@theme {
-  --color-yellow: #e7d393;
-  --color-white-100: #efefef;
-  --font-monalisa: "monalisa";
-  --font-serif: "DM Serif Text", serif;
-  --font-sans: "Mona Sans", sans-serif;
-}
-
-@layer components {
-  
-  .nav-container {
-    @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-0 px-5 container mx-auto;
-  }
-
-  
-  .nav-brand {
-    @apply flex gap-2 cursor-pointer text-nowrap md:text-base text-sm;
-  }
-
- 
-  .nav-title {
-    @apply text-3xl -mb-2 font-monalisa;
-  }
-
-  
-  .nav-links {
-    @apply flex items-center justify-center lg:gap-12 gap-7;
-  }
-
-  
-  .nav-link {
-    @apply cursor-pointer text-nowrap md:text-base text-sm;
-  }
-}
-
-
-
-
-
-
-
-
-
-/* ---------------------- this is the original one ---------------------------
-
-/* @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
 
 @import "tailwindcss";
 
@@ -96,7 +34,6 @@ body {
 
 @utility abs-center {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
-
 }
 
 @utility text-gradient {
@@ -436,4 +373,4 @@ body {
             @apply absolute bottom-0 right-0 lg:w-96 w-1/3 pointer-events-none;
         }
     }
-} */
+}

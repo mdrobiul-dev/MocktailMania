@@ -1,18 +1,125 @@
-import React from 'react'
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { SplitText } from "gsap/all";
+import { useRef } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const Hero = () => {
-  return (
-    <div className='h-screen w-full bg-amber-500 text-9xl'>hello Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, unde. Odio voluptates incidunt architecto laudantium. In esse repellendus aut mollitia quae obcaecati consequatur eos? Incidunt magnam maxime labore eligendi magni? Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur ratione doloremque earum quas officiis natus, consequuntur hic. Omnis accusantium molestiae dolor eum architecto nisi deleniti harum, odit, sint, possimus exercitationem.
-    Nostrum ab nihil libero sit quasi quod aperiam, in ad enim mollitia reprehenderit aliquam nobis corporis dolor. Labore est amet corporis, nam ipsa consequatur facere ratione? Placeat exercitationem ducimus quam?
-    Rem sunt eum illo culpa, ex ea hic amet recusandae iure voluptatibus odio voluptatem cupiditate quod voluptas eius labore maxime dolor iste, totam quos unde? Quo dignissimos incidunt quas aspernatur.
-    Modi perferendis velit saepe veritatis quo, dolor recusandae debitis voluptatum illo voluptas dolorem impedit magnam maiores expedita similique error facere ullam quos iusto sed! Deserunt eos expedita reiciendis quasi eaque.
-    Fugit dicta, quidem deserunt, quos iusto inventore, earum architecto saepe dolorum odit animi! Suscipit, voluptatibus? Libero amet reiciendis, nostrum, dignissimos necessitatibus harum doloribus sit nam in quaerat, fugiat cumque ea.
-    Facilis corrupti, animi praesentium exercitationem ratione alias est beatae eum maiores voluptates consectetur nihil omnis earum aspernatur nam incidunt natus amet, excepturi ducimus officiis numquam quod ipsam? Saepe, rem tempore!
-    Incidunt ullam ipsa laboriosam assumenda fugiat, excepturi mollitia iste sit magnam dolor quos temporibus odio impedit reprehenderit! Soluta fugit quidem fugiat culpa porro incidunt, maxime labore voluptates animi blanditiis id.
-    Numquam omnis consectetur facere magni dolor. At, deserunt. Eos eaque eum accusamus, itaque, ipsa est iste totam nostrum recusandae facilis, velit excepturi magni enim adipisci aspernatur earum consectetur dignissimos autem.
-    Sequi ipsum fuga minima minus voluptas tenetur perferendis ea repudiandae ipsam, dolore blanditiis vero architecto pariatur a eos nobis cupiditate excepturi voluptate inventore? Non minus aperiam placeat quo, ab recusandae.
-    Accusantium, perferendis animi sit beatae est nobis soluta deleniti facere error provident aliquam maiores, saepe assumenda atque, explicabo consequuntur quam veritatis natus cupiditate harum. Soluta voluptas at asperiores eaque facilis.</div>
-  )
-}
+ const videoRef = useRef();
+ 
+ const isMobile = useMediaQuery({ maxWidth: 767 });
+ 
+ useGSAP(() => {
+	const heroSplit = new SplitText(".title", {
+	 type: "chars, words",
+	});
+	
+	const paragraphSplit = new SplitText(".subtitle", {
+	 type: "lines",
+	});
+	
+	// Apply text-gradient class once before animating
+	heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
+	
+	gsap.from(heroSplit.chars, {
+	 yPercent: 100,
+	 duration: 1.8,
+	 ease: "expo.out",
+	 stagger: 0.06,
+	});
+	
+	gsap.from(paragraphSplit.lines, {
+	 opacity: 0,
+	 yPercent: 100,
+	 duration: 1.8,
+	 ease: "expo.out",
+	 stagger: 0.06,
+	 delay: 1,
+	});
+	
+	gsap
+	.timeline({
+	 scrollTrigger: {
+		trigger: "#hero",
+		start: "top top",
+		end: "bottom top",
+		scrub: true,
+	 },
+	})
+	.to(".right-leaf", { y: 200 }, 0)
+	.to(".left-leaf", { y: -200 }, 0)
+	.to(".arrow", { y: 100 }, 0);
+	
+	const startValue = isMobile ? "top 50%" : "center 60%";
+	const endValue = isMobile ? "120% top" : "bottom top";
+	
+	let tl = gsap.timeline({
+	 scrollTrigger: {
+		trigger: "video",
+		start: startValue,
+		end: endValue,
+		scrub: true,
+		pin: true,
+	 },
+	});
+	
+	videoRef.current.onloadedmetadata = () => {
+	 tl.to(videoRef.current, {
+		currentTime: videoRef.current.duration,
+	 });
+	};
+ }, []);
+ 
+ return (
+	<>
+	 <section id="hero" className="noisy">
+		<h1 className="title">MOJITO</h1>
+		
+		<img
+		 src="/images/hero-left-leaf.png"
+		 alt="left-leaf"
+		 className="left-leaf"
+		/>
+		<img
+		 src="/images/hero-right-leaf.png"
+		 alt="right-leaf"
+		 className="right-leaf"
+		/>
+		
+		<div className="body">
+		 {/* <img src="/images/arrow.png" alt="arrow" className="arrow" /> */}
+		 
+		 <div className="content">
+			<div className="space-y-5 hidden md:block">
+			 <p>Cool. Crisp. Classic.</p>
+			 <p className="subtitle">
+				Sip the Spirit <br /> of Summer
+			 </p>
+			</div>
+			
+			<div className="view-cocktails">
+			 <p className="subtitle">
+				Every cocktail on our menu is a blend of premium ingredients,
+				creative flair, and timeless recipes — designed to delight your
+				senses.
+			 </p>
+			 <a href="#cocktails">View cocktails</a>
+			</div>
+		 </div>
+		</div>
+	 </section>
+	 
+	 <div className="video absolute inset-0">
+		<video
+		 ref={videoRef}
+		 muted
+		 playsInline
+		 preload="auto"
+		 src="/videos/output.mp4"
+		/>
+	 </div>
+	</>
+ );
+};
 
-export default Hero
+export default Hero;
