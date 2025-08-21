@@ -21,6 +21,6 @@ function App() {
       {/* <Menu /> */}
     </main>
   );
-}             
+}                     
 
 export default App;
