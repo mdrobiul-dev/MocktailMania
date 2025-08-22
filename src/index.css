@@ -374,3 +374,17 @@ body {
         }
     }
 }
+
+#menu {
+  overflow: hidden;
+}
+
+.masked-container div {
+  bottom: 80px; /* mobile */
+}
+
+@media (min-width: 768px) {
+  .masked-container div {
+    bottom: -50px; /* desktop */
+  }
+}
